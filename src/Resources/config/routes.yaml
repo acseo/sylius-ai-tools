@@ -1,0 +1,2 @@
+imports:
+    resource: routes/sylius_admin.yaml

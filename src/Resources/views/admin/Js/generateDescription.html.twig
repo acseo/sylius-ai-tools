@@ -1,0 +1,126 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var accordionTitles = document.querySelectorAll('.accordion .title');
+        accordionTitles.forEach(function (title) {
+            title.addEventListener('click', function () {
+                {% for modalType in ['description_from_text', 'description_from_pictures'] %}
+                    {% for locale in get_all_locales_codes() %}
+                        $('#generate_{{ modalType }}_{{ locale }}_modal').modal('hide').removeAttr('style');
+                        $('#preview_{{ modalType }}_{{ locale }}_modal').modal('hide').removeAttr('style');
+                        $('#{{ modalType }}_{{ locale }}_form').removeClass('loading');
+                    {% endfor %}
+                {% endfor %}
+            });
+        });
+
+        var forms = {};
+        var buttons = {
+            generate: {},
+            close: {},
+            validate: {},
+            cancel: {}
+        };
+
+        {% for modalType in ['description_from_text', 'description_from_pictures'] %}
+            {% for locale in get_all_locales_codes() %}
+                var formKey = '{{ modalType }}_{{ locale }}_form';
+                forms[formKey] = document.getElementById(formKey);
+
+                buttons.generate['{{ modalType }}_{{ locale }}_button'] = document.getElementById('generate_{{ modalType }}_{{ locale }}_button');
+                buttons.close['{{ modalType }}_{{ locale }}_modal'] = document.getElementById('close_{{ modalType }}_{{ locale }}_modal');
+                buttons.validate['{{ modalType }}_{{ locale }}_modal'] = document.getElementById('validate_{{ modalType }}_{{ locale }}_modal');
+                buttons.cancel['{{ modalType }}_{{ locale }}_modal'] = document.getElementById('cancel_{{ modalType }}_{{ locale }}_modal');
+
+                if (buttons.generate['{{ modalType }}_{{ locale }}_button']) {
+                    buttons.generate['{{ modalType }}_{{ locale }}_button'].addEventListener('click', function () {
+                        $('#generate_{{ modalType }}_{{ locale }}_modal').modal('show');
+                    });
+                }
+
+                if (buttons.close['{{ modalType }}_{{ locale }}_modal']) {
+                    buttons.close['{{ modalType }}_{{ locale }}_modal'].addEventListener('click', function () {
+                        $('#generate_{{ modalType }}_{{ locale }}_modal').modal('hide');
+                        $('#{{ modalType }}_{{ locale }}_form').removeClass('loading');
+                    });
+                }
+
+                var form = forms[formKey];
+                if (form) {
+                    form.addEventListener('submit', function (event) {
+                        event.preventDefault();
+                        var formData = new FormData(this);
+
+                        var descriptionContent = document.getElementById('preview_content_{{ modalType }}_{{ locale }}_modal');
+                        descriptionContent.innerHTML = '<div class="ui active inline loader"></div>{{ "sylius.ui.loading" | trans }}';
+
+                        fetch(this.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                            .then(function(response) {
+                                if (!response.ok) {
+                                    throw new Error('{{ "sylius.ui.error_network" | trans }}' + response.statusText);
+                                }
+                                return response.json();
+                            })
+                            .then(function(data) {
+                                var titleElement = document.querySelector(`#preview_{{ modalType }}_{{ locale }}_modal .title`);
+                                var descriptionElement = document.querySelector(`#preview_{{ modalType }}_{{ locale }}_modal .description p`);
+                                var shortDescriptionElement = document.querySelector(`#preview_{{ modalType }}_{{ locale }}_modal .short-description`);
+                                var metaDescriptionElement = document.querySelector(`#preview_{{ modalType }}_{{ locale }}_modal .meta-description`);
+                                var metaKeywordsElement = document.querySelector(`#preview_{{ modalType }}_{{ locale }}_modal .meta-keywords`);
+
+                                if (data.descriptions && data.descriptions.content && data.descriptions.content.length > 0) {
+                                    var item = data.descriptions.content[0];
+                                    titleElement.innerText = item.title || '';
+                                    descriptionElement.innerText = item.description || '';
+                                    shortDescriptionElement.innerText = item.short_description || '';
+                                    metaDescriptionElement.innerText = item.meta_description || '';
+                                    metaKeywordsElement.innerText = item.meta_keywords || '';
+                                } else {
+                                    titleElement.innerText = '{{ "sylius.ui.no_results" | trans }}';
+                                    descriptionElement.innerText = '';
+                                    shortDescriptionElement.innerText = '';
+                                    metaDescriptionElement.innerText = '';
+                                    metaKeywordsElement.innerText = '';
+                                }
+
+                                $('#{{ modalType }}_{{ locale }}_form').removeClass('loading');
+
+                                descriptionContent.innerHTML = '';
+                                $('#preview_{{ modalType }}_{{ locale }}_modal').modal('show');
+                            })
+                            .catch(function(error) {
+                                console.error('Erreur:', error);
+                                descriptionContent.innerHTML = '<p>{{ "sylius.ui.error_generating" | trans }}</p>';
+                            });
+                    });
+                }
+
+                if (buttons.validate['{{ modalType }}_{{ locale }}_modal']) {
+                    buttons.validate['{{ modalType }}_{{ locale }}_modal'].addEventListener('click', function () {
+                        $('#{{ modalType }}_{{ locale }}_form').removeClass('loading');
+                        $('#preview_{{ modalType }}_{{ locale }}_modal').modal('hide');
+                        $('#generate_{{ modalType }}_{{ locale }}_modal').modal('hide');
+
+                        var form = forms['{{ modalType }}_{{ locale }}_form'];
+                        if (form) {
+                            form.submit();
+                        }
+                    });
+                }
+
+                if (buttons.cancel['{{ modalType }}_{{ locale }}_modal']) {
+                    buttons.cancel['{{ modalType }}_{{ locale }}_modal'].addEventListener('click', function () {
+                        $('#{{ modalType }}_{{ locale }}_form').removeClass('loading');
+                        $('#preview_{{ modalType }}_{{ locale }}_modal').modal('hide');
+                        $('#generate_{{ modalType }}_{{ locale }}_modal').modal('hide');
+                    });
+                }
+            {% endfor %}
+        {% endfor %}
+    });
+</script>

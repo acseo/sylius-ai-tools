@@ -1,0 +1,6 @@
+suites:
+    main:
+        namespace: ACSEO\SyliusAITools
+        psr4_prefix: ACSEO\SyliusAITools
+        src_path: src
+        spec_path: tests

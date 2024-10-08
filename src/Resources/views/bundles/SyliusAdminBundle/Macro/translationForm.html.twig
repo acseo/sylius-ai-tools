@@ -1,0 +1,33 @@
+{#
+This file extends the default translationForm.html.twig to add
+the functionality for generating descriptions.
+The HTML and JS for these functionalities have been moved
+to a separate Twig file, generate_description.html.twig.
+#}
+{% extends '@SyliusAdmin/Macro/translationForm.html.twig' %}
+
+{% macro translationFormWithSlug(translations, slugFieldTemplate, resource) %}
+    {% import '@SyliusUi/Macro/flags.html.twig' as flags %}
+    <div class="ui styled fluid accordion">
+        {% for locale, translationForm in translations %}
+            <div data-locale="{{ locale }}">
+                <div class="title{% if loop.first %} active{% endif %}">
+                    <i class="dropdown icon"></i>
+                    {{ flags.fromLocaleCode(locale) }} {{ locale|sylius_locale_name }}
+                </div>
+                <div class="ui content{% if loop.first %} active{% endif %}">
+                    {{ include('@SyliusAITools/admin/Macro/generateDescription.html.twig', { 'locale': locale, 'resource': resource}) }}
+
+                    {% for field in translationForm %}
+                        {% if field.vars.name != 'slug' %}
+                            {{ form_row(field) }}
+                        {% else %}
+                            {% include slugFieldTemplate with { 'slugField': translationForm.slug, 'resource': resource } %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}
+

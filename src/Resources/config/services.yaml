@@ -1,0 +1,36 @@
+imports:
+    - { resource: packages/*.yaml }
+    
+parameters:
+    default_locale: 'en_US'
+    openai_model: 'gpt-4o-mini'
+    openai_api_key: '%env(OPENAI_API_KEY)%'
+    
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+    
+    ACSEO\SyliusAITools\Manager\DescriptionManager:
+        arguments:
+            $descriptionGenerator: '@ACSEO\SyliusAITools\Generator\GenerateDescription'
+            $productRepository: '@sylius.repository.product'
+            $entityManager: '@doctrine.orm.entity_manager'
+            
+    ACSEO\SyliusAITools\Controller\:
+        resource: '../../Controller/'
+        public: true
+        tags: [ 'controller.service_arguments' ]
+    
+    ACSEO\SyliusAITools\Generator\GenerateDescription:
+        arguments:
+            $apiKey: '%openai_api_key%'
+            $model: '%openai_model%'
+            $defaultLocale: '%default_locale%'
+    
+    ACSEO\SyliusAITools\Twig\LocaleExtension:
+        arguments:
+            $localeProvider: '@sylius.locale_provider'
+        tags:
+            - { name: 'twig.extension' }

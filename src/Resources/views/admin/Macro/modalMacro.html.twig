@@ -1,0 +1,52 @@
+{% macro generateModal(modalType, locale, resource) %}
+    {% import '@SyliusUi/Macro/flags.html.twig' as flags %}
+
+    <div class="ui modal" id="generate_{{ modalType }}_{{ locale }}_modal">
+        <div class="header">{{ flags.fromLocaleCode(locale) }} {{ locale|sylius_locale_name }}</div>
+        <div class="content" id="content_{{ modalType }}_{{ locale }}_modal">
+            {{ render(path('sylius_admin_generate_' ~ modalType|lower, {'locale': locale, 'resource': resource.id})) }}
+        </div>
+        <div class="actions">
+            <div class="ui red cancel inverted button" id="close_{{ modalType }}_{{ locale }}_modal">
+                <i class="remove icon"></i>
+                {{ 'sylius.ui.cancel'|trans }}
+            </div>
+        </div>
+    </div>
+
+    <div class="ui modal" id="preview_{{ modalType }}_{{ locale }}_modal">
+        <div class="header">{{ flags.fromLocaleCode(locale) }} {{ locale|sylius_locale_name }}</div>
+        <div class="content">
+            <div id="preview_content_{{ modalType }}_{{ locale }}_modal"></div>
+            <h3 class="title"></h3>
+
+            <h4 class="ui dividing header">{{ 'sylius.ui.description'|trans }}</h4>
+            <div class="description">
+                <p></p>
+            </div>
+
+            <h4 class="ui dividing header">{{ 'sylius.ui.meta_information'|trans }}</h4>
+            <div class="meta">
+                <div>
+                    <strong>{{ 'sylius.ui.short_description'|trans }}:</strong> <span class="short-description"></span>
+                </div>
+                <div>
+                    <strong>{{ 'sylius.ui.meta_description'|trans }}:</strong> <span class="meta-description"></span>
+                </div>
+                <div>
+                    <strong>{{ 'sylius.ui.meta_keywords'|trans }}:</strong> <span class="meta-keywords"></span>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui red cancel inverted button" id="cancel_{{ modalType }}_{{ locale }}_modal">
+                <i class="remove icon"></i>
+                {{ 'sylius.ui.cancel'|trans }}
+            </div>
+            <button class="ui green ok inverted button" id="validate_{{ modalType }}_{{ locale }}_modal">
+                <i class="checkmark icon"></i>
+                {{ 'sylius.ui.validate'|trans }}
+            </button>
+        </div>
+    </div>
+{% endmacro %}

@@ -1,0 +1,11 @@
+{% import '@SyliusAITools/admin/Macro/modalMacro.html.twig' as modal_macro %}
+
+{% if resource is defined %}
+    {% for locale in get_all_locales_codes() %}
+        {% for modalType in ['description_from_text', 'description_from_pictures'] %}
+            {{ modal_macro.generateModal(modalType, locale, resource) }}
+        {% endfor %}
+    {% endfor %}
+
+    {{ include('@SyliusAITools/admin/Js/generateDescription.html.twig') }}
+{% endif %}

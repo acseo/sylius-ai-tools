@@ -1,0 +1,3 @@
+sylius_admin_ai_tools:
+    resource: admin/ai-tools.yaml
+    prefix: '/%sylius_admin.path_name%'

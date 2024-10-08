@@ -1,0 +1,9 @@
+sylius_admin_generate_description_from_text:
+    path: /generate-description-from-text
+    controller: ACSEO\SyliusAITools\Controller\Admin\ProductDescriptionFromTextController::index
+    methods: [GET, POST]
+
+sylius_admin_generate_description_from_pictures:
+    path: /generate-description-from-pictures
+    controller: ACSEO\SyliusAITools\Controller\Admin\ProductDescriptionFromPicturesController::index
+    methods: [GET, POST]

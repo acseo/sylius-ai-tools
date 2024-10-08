@@ -1,0 +1,76 @@
+# Ignore Composer vendor directory and lock file
+/vendor/
+/composer.lock
+
+# Ignore build directory and lock files
+/etc/build/*
+!/etc/build/.gitignore
+
+# Ignore test configuration files
+/tests/Application
+
+# Ignore PHP configuration files
+/behat.yml
+/phpspec.yml
+/package-lock.json
+
+# Ignore various directories and files
+/var
+/public
+/bin
+/.php-version
+/php.ini
+/node_modules
+/yarn.lock
+
+###> Docker ###
+# Ignore Docker override files
+/docker-compose.override.yml
+###< Docker ###
+
+###> Symfony/PHPUnit Bridge ###
+# Ignore PHPUnit configuration and cache files
+.phpunit
+/phpunit.xml
+/.phpunit.result.cache
+###< Symfony/PHPUnit Bridge ###
+
+###> PHP CS Fixer ###
+# Ignore PHP CS Fixer cache and config files
+/.php-cs-fixer.cache
+/.php-cs-fixer.php
+###< PHP CS Fixer ###
+
+###> Symfony/Webpack Encore Bundle ###
+# Ignore Webpack build artifacts
+/node_modules/
+/public/build/
+/public/bootstrap-theme/
+/public/pro-bootstrap-theme
+npm-debug.log
+yarn-error.log
+###< Symfony/Webpack Encore Bundle ###
+
+###> MacOSX & Tools ###
+# Ignore IDE settings and MacOS generated files
+.idea/
+.idea
+.idea/php.xml
+**/*.DS_STORE
+###< MacOSX & Tools ###
+
+###> Production Environment Files ###
+# Ignore production environment files
+/.env.prod.*
+###< Production Environment Files ###
+
+# Ignore development container configuration
+.devcontainer/
+# Ignore GitHub workflows
+.github/
+
+# Ignore distribution folder and related files
+/dist/
+
+# Ignore PHP Mess Detector configuration
+/phpmd.xml

@@ -1,0 +1,25 @@
+product:
+    update:
+        success: Product updated successfully with new descriptions
+    not_found: Product not found
+    
+sylius:
+    ui:
+        cancel: Cancel
+        description: Description
+        error_generating: Oops! Something went wrong. Please try again.
+        error_network: Network response was not ok.
+        form:
+            image_label: Image
+            keywords_help: Please enter keywords separated by commas
+            keywords_label: Keywords
+            text_label: Text
+        generate_description_from_pictures: Generate description from pictures
+        generate_description_from_text: Generate description from text
+        loading: Loading...
+        meta_description: Meta Description
+        meta_information: Meta Information
+        meta_keywords: Meta Keywords
+        no_results: No results found.
+        short_description: Short Description
+        validate: Validate

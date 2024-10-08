@@ -1,0 +1,22 @@
+{{ form_start(form, {
+    'action': path('sylius_admin_generate_description_from_text'),
+    'attr': {
+        'class': 'ui form',
+        'id': 'description_from_text_' ~ locale ~ '_form'
+    }
+}) }}
+    <div class="field">
+        {{ form_label(form.text) }}
+        {{ form_widget(form.text) }}
+    </div>
+    <div class="field">
+        {{ form_label(form.keywords) }}
+        {{ form_widget(form.keywords) }}
+        {{ form_help(form.keywords) }}
+    </div>
+    {{ form_row(form.locale) }}
+    {{ form_row(form.resource) }}
+    <button class="ui primary button" type="submit">
+        {{ 'sylius.ui.generate_description_from_text'|trans }}
+    </button>
+{{ form_end(form) }}

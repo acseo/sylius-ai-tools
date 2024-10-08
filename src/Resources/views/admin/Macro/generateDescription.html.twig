@@ -1,0 +1,13 @@
+{% set resourceClass = constant('class', resource) %}
+{% set resourceClassString = resourceClass|trim %}
+{% if resourceClassString ends with 'Product' %}
+    <div style="margin-bottom: 20px">
+        {% for modalType in ['description_from_text', 'description_from_pictures'] %}
+            {% set alignmentClass = loop.index == 1 ? 'left' : 'right' %}
+            <button type="button" class="ui {{ alignmentClass }} attached button" id="generate_{{ modalType }}_{{ locale }}_button">
+                {{ ('sylius.ui.generate_' ~ modalType)|trans }}
+            </button>
+        {% endfor %}
+    </div>
+{% endif %}
+

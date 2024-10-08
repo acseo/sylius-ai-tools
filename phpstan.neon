@@ -1,0 +1,16 @@
+parameters:
+    level: 8
+    paths:
+        - src/
+
+    excludePaths:
+        # Makes PHPStan crash
+        - 'src/DependencyInjection/SyliusAITools.php'
+
+        # Test dependencies
+        - 'tests/Application/**/*'
+
+    ignoreErrors:
+        - '#Method .+ has parameter .+ with no value type specified in iterable type array\.#'
+        - '#Method .+ return type has no value type specified in iterable type array\.#'
+        - '#Method .+ has parameter .+ with generic interface .+ but does not specify its types#'
